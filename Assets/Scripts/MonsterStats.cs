@@ -2,61 +2,62 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MonsterStats : MonoBehaviour
 {
-    [Header("Health")]
-    public int health;
-    public float currentHealth;
+    public PlayerStats Script;
 
-    [Header("Damage")]
-    public int damage;
+    [Header("Monster Health")]
+    public int MonsterHealth = 10;
+    public float currentMonsterHealth;
+
+    [Header("Monster Damage")]
+    public int MonsterDamage = 2;
 
     private void Start()
     {
-        SetCurrentHealth();
+        SetCurrentMonsterHealth();
 
     }
 
-    void SetCurrentHealth()
+    void SetCurrentMonsterHealth()
     {
-        currentHealth = health;
-        Debug.Log("currentHealth = " + currentHealth);
+        currentMonsterHealth = MonsterHealth;
+        Debug.Log("currentHealth = " + currentMonsterHealth);
+
+        //currentPlayerHealth = (maxPlayerHealth * level);
+        //Debug.Log("currentHealth = " + currentPlayerHealth);
     }
 
    
     void Update()
     {
-
+        
     }
 
-    void TakeDamage(int damageAmount)
-
+    public void TakeDamage(int currentPlayerMagicDamage)
+    //public void TakeDamage(int currentPlayerDamage, int currentPlayerMagicDamage)
     {
-        this.currentHealth -= damageAmount;
-    }
+        this.currentMonsterHealth -= currentPlayerMagicDamage;
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-
-        }
+        if (currentMonsterHealth <= 0)
+            Destroy(this.gameObject);
 
     }
 
-    // HACK to fix playing audio incase about to destroy character (Otherwise should use this.GetComponent<AudioSource>().Play())
-    //AudioSource.PlayClipAtPoint(this.GetComponent<AudioSource>().clip, Camera.main.transform.position);
-
-    //this.GetComponent<SpriteRenderer>().color = Color.red;
-    //Invoke("StopDamage", 0.2f);
-
+    //private void Die()
+    //{
+    //    gameObject.Destroy
     //}
 
-    //void StopDamage()
-    //{
-    //this.GetComponent<SpriteRenderer>().color = Color.white;
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            other.gameObject.GetComponent<PlayerStats>().TakeDamage(MonsterDamage);
 
-    // Added this for health bar but not working//
-    //_Heal
+        }
+    }
+
 }

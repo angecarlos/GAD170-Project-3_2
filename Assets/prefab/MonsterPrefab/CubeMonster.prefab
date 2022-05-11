@@ -139,7 +139,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f232191c0dfc64297a52e5671a5da3e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
-  currentHealth: 0
-  damage: 3
-  MoveSpeed: 2
+  MonsterHealth: 8
+  currentMonsterHealth: 0
+  MonsterDamage: 3

@@ -4,37 +4,58 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
+    public MonsterStats Script;
+    public GameObject Magic;
+
     // Level of the player
     [Header("Level")]
     public int level = 1;
 
-    [Header("Health")]
-    public int maxHealth = 10;
-    public float currentHealth;
+    [Header("Player Health")]
+    public int maxPlayerHealth = 10;
+    public float currentPlayerHealth;
 
-    [Header("XP")]
+    [Header("Player XP")]
     public int XP = 0;
     //public float currentXP;
     public float xpForNextLevel = 20;   //Xp needed to level up, the higher the level, the harder it gets.
 
-    [Header("Damage")]
-    public int damage = 2;
-    public float currentDamage;
+    [Header("Player Damage")]
+    public int PlayerDamage = 2;
+    public float currentPlayerDamage;
+
+    [Header("Player Magic Damage")]
+    public int PlayerMagicDamage = 2;
+    public float currentPlayerMagicDamage;
+
+    [Range(0.5f, 1.5f)]
+    private float fireRate = 1;
+
+    private float timer;
+
+    [SerializeField]
+    private Transform firePoint;
+
+    [SerializeField]
+    private HealthBar _healthBar;
 
 
     private void Start()
     {
-        SetCurrentHealth();
+        SetCurrentPlayerHealth();
         //SetCurrentXP();
         SetXPForNextLevel();
-        SetCurrentDamage();
+        SetCurrentPlayerDamage();
+        SetCurrentPlayerMagicDamage();
+
+        
 
     }
 
-    void SetCurrentHealth()
+    void SetCurrentPlayerHealth()
     {
-        currentHealth = (maxHealth * level);
-        Debug.Log("currentHealth = " + currentHealth);
+        currentPlayerHealth = (maxPlayerHealth * level);
+        Debug.Log("currentHealth = " + currentPlayerHealth);
     }
 
     //void SetCurrentXP()
@@ -49,25 +70,84 @@ public class PlayerStats : MonoBehaviour
         Debug.Log("xpForNextLevel " + xpForNextLevel);
     }
 
-    public void SetCurrentDamage()
+    public void SetCurrentPlayerDamage()
     {
-        currentDamage = (damage * level);
-        Debug.Log("currentDamage = " + currentDamage);
+        currentPlayerDamage = (PlayerDamage * level);
+        Debug.Log("currentPlayerDamage = " + currentPlayerDamage);
 
-        GameEvents.OnPlayerAttack?.Invoke((int)currentDamage);
+        //GameEvents.OnPlayerAttack?.Invoke((int)currentPlayerDamage);
+    }
+
+    public void SetCurrentPlayerMagicDamage()
+    {
+        currentPlayerMagicDamage = (PlayerMagicDamage * level);
+        Debug.Log("currentPlayerMagicDamage =" + currentPlayerMagicDamage);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
+        _healthBar.UpdateHealthBar(maxPlayerHealth, currentPlayerHealth);
+
+        timer += Time.deltaTime;
+        if (timer >= fireRate)
+        {
+            if (Input.GetButton("Fire1"))
+            {
+                timer = 0f;
+                FireMagic();
+
+                Instantiate(Magic, firePoint.transform);
+                Rigidbody rb = Magic.GetComponent<Rigidbody>();
+                rb.velocity = firePoint.forward * 1;
+            }
+        }
     }
 
-    public void TakeDamage(int damageAmount)
-
+    private void FireMagic()
     {
-        this.currentHealth -= damageAmount;
+        //Debug.DrawRay(firePoint.position, firePoint.forward * 100, Color.red, 2f);
+
+        Ray ray = new Ray(firePoint.position, firePoint.forward);
+        RaycastHit hitInfo;
+
+        if (Physics.Raycast(ray, out hitInfo, 100))
+        {
+            var currentMonsterHealth = hitInfo.collider.GetComponent<MonsterStats>();
+
+            if (currentMonsterHealth != null)
+                currentMonsterHealth.TakeDamage((int)currentPlayerMagicDamage);
+
+
+            //gameObject.GetComponent<MonsterStats>().TakeDamage(currentPlayerMagicDamage);
+            //Destroy(hitInfo.collider.gameObject);
+
+
+
+            //if (gameObject.CompareTag("Monsters"))
+            //{
+            //    gameObject.GetComponent<MonsterStats>().TakeDamage(currentPlayerMagicDamage);
+            //}
+        }
     }
+
+    public void TakeDamage(int MonsterDamage)
+    {
+        this.currentPlayerHealth -= MonsterDamage;
+        InvokeRepeating("TakeDamage", 1, 100);
+
+        Debug.Log("MonsterDamage = " + MonsterDamage);
+
+        if (currentPlayerHealth <= 0)
+            Destroy(this.gameObject);
+    }
+
+
+
+
+
+
 }
 
 

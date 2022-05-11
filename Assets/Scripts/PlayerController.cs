@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 
 {
+    
     [Header("Player")]
     [Tooltip("Move speed of the character in m/s")]
     public float MoveSpeed = 2.0f;
@@ -25,7 +26,8 @@ public class PlayerController : MonoBehaviour
     [Tooltip("The height the player can jump")]
     public float JumpHeight = 5f;
     public float currentJumpHeight;
-    private int damage;
+
+    //private int damage;
 
     // Start is called before the first frame update
     void Start()
@@ -62,13 +64,10 @@ public class PlayerController : MonoBehaviour
             this.transform.Rotate(this.transform.up, Time.deltaTime * this.TurnSpeed);
         }
 
-        if (Input.GetMouseButtonDown(0) == true)
-        {
+        //if (Input.GetMouseButtonDown(0) == true)
+        //{
             
-        }
-
-
-        GameEvents.OnPlayerPosition?.Invoke(transform.position);
+        //}
         
     }
 }

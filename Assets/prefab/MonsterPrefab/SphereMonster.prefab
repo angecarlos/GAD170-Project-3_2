@@ -142,9 +142,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f232191c0dfc64297a52e5671a5da3e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 8
-  currentHealth: 0
-  damage: 2
+  MonsterHealth: 10
+  currentMonsterHealth: 0
+  MonsterDamage: 1
 --- !u!114 &-6397420383971118578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,7 +157,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3859091c1ea504076adf1bc329fd5366, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 10
+  Script: {fileID: 0}
+  MoveSpeed: 6
   RotationSpeed: 2
 --- !u!65 &1336958251015963300
 BoxCollider:

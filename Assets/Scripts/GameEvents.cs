@@ -5,11 +5,9 @@ using UnityEngine;
 
 public static class GameEvents
 {
-    public static Action<int> OnLevelUp;
-
-    public static Action<Vector3> OnPlayerPosition;
-
     public static Action<int> OnPlayerAttack;
+
+    //public static Action<int> OnMonsterAttack;
 
 }
 

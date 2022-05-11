@@ -6,13 +6,7 @@ using UnityEngine.UI;
 public class MonsterAttackScript : MonoBehaviour
 
 {
-    //public GameObject Player;
-    //public MonsterStats;
-
-    //public bool OnTrigger;
-    //public bool PlayerSighted;
-    //public bool GoToPlayer;
-    //public bool MonsterAttack;
+    public MonsterStats Script;
 
     //Animator animator;
 
@@ -21,36 +15,12 @@ public class MonsterAttackScript : MonoBehaviour
 
     [Header("Speed")]
     public float RotationSpeed = 2.0f;
-
-    //private void OnEnable()
-    //{
-    //   GameEvents.OnPlayerPosition += MoveTowardsPlayer;
-    //}
-
-    //private void OnDisable()
-    //{
-    //    GameEvents.OnPlayerPosition -= MoveTowardsPlayer;
-    //}
-
-    //private void MoveTowardsPlayer(Vector3 PlayerPosition)
-    //{
-    //    throw new NotImplementedException();
-    //}
-
-
-    //void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.CompareTag("Player"))
-
-    //        transform.position += transform.forward * Time.deltaTime;
-    //Use to play sound
-    //PlayerSighted = true;
-    //{ this.transform.position += this.transform.forward * Time.deltaTime * this.MonsterStats; }
+    private object MonsterDamage;
 
     public void Start()
     {
         //animator = GetComponent<Animator>();
-        
+
     }
 
     private void OnTriggerStay(Collider other)
@@ -73,16 +43,13 @@ public class MonsterAttackScript : MonoBehaviour
             Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, singleStep, 0.0f);
             transform.rotation = Quaternion.LookRotation(newDirection);
 
-            
-
-
         }
 
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             //animator.SetBool("isWalking", false);
 
@@ -91,13 +58,7 @@ public class MonsterAttackScript : MonoBehaviour
 
     }
 
+    
 }
-
-
-    //void OnTriggerEnter()
-    //{
-
-    //}
-
-
         
+    
